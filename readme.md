@@ -2,4 +2,4 @@
 
 Используемый стэк: go 1.22 / postgresql / redis
 
-###---updates soon---
+### ---updates soon---
