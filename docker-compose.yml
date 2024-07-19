@@ -1,0 +1,26 @@
+version: "3.9"
+
+services:
+  postgres:
+    image: postgres:14
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: black_list
+    volumes:
+      - .:/20240718230324_tables.sql
+      - ${PWD}/migrations/postgres
+    ports:
+      - 5432:5433
+    networks:
+      eip-net:
+        ipv4_address: 172.20.0.8
+
+networks:
+  eip-net:
+    name: eip-net
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.20.0.1/24
