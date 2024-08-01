@@ -1,0 +1,275 @@
+openapi: 3.0.0
+info:
+  title: сервис "Чёрный список"
+  version: 1.0.0
+paths:
+  /api/v0/authorization:
+    post:
+      summary: Авторизация пользователя
+      parameters:
+        - in: header
+          name: login
+          required: true
+          schema:
+            type: integer
+            description: Логин пользователя
+        - in: query
+          name: token
+          description: Токен пользователя
+          schema:
+            type: string
+            example: "user_token"
+      responses:
+        '200':
+          description: Вход разрешён
+          content:
+            application/json:
+              schema:
+                description: JSON-ответ
+                type: object
+                additionalProperties: true
+                example: '{"success": true"}'
+        '400':
+          description: Некорректные данные
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+        '401':
+          description: Неверные данные
+        '403':
+          description: Пользователь не имеет доступа
+        '404':
+          description: Пользователь не найден
+        '500':
+          description: Внутренняя ошибка сервера
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+  /api/v0/list:
+    get:
+      summary: Получение списка элементов
+      parameters:
+      - in: header
+        name: token
+        description: Токен пользователя
+        schema:
+          type: string
+          example: "user_token"
+      - in: query
+        name: limit
+        required: false
+        schema:
+          type: integer
+          description: Лимит
+      - in: query
+        name: offset
+        required: false
+        schema:
+          type: integer
+          description: Оффсет
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+        '401':
+          description: Пользователь не авторизован
+        '403':
+          description: Пользователь не имеет доступа
+        '500':
+          description: Внутренняя ошибка сервера
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+
+    post:
+      summary: Создание нового элемента
+      parameters:
+        - in: header
+          name: token
+          description: Токен админа
+          schema:
+            type: string
+            example: "admin_token"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                tag_ids:
+                  type: array
+                  description: Идентификаторы тэгов
+                  items:
+                    type: integer
+                feature_id:
+                  type: integer
+                  description: Идентификатор фичи
+                content:
+                  type: object
+                  description: Содержимое баннера
+                  additionalProperties: true
+                  example: '{"title": "some_title", "text": "some_text", "url": "some_url"}'
+                is_active:
+                  type: boolean
+                  description: Флаг активности баннера
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  banner_id:
+                    type: integer
+                    description: Идентификатор созданного баннера
+        '400':
+          description: Некорректные данные
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+        '401':
+          description: Пользователь не авторизован
+        '403':
+          description: Пользователь не имеет доступа
+        '500':
+          description: Внутренняя ошибка сервера
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+  /api/v0/list/{id}:
+    get:
+      summary: Получение информации об элементе по ID
+      parameters:
+        - in: query
+          name: tag_id
+          description: Токен пользователя
+          schema:
+            type: string
+            example: "user_token"
+      responses:
+        '200':
+          description: OK
+        '400':
+          description: Некорректные данные
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+        '401':
+          description: Пользователь не авторизован
+        '403':
+          description: Пользователь не имеет доступа
+        '404':
+          description: Баннер не найден
+        '500':
+          description: Внутренняя ошибка сервера
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+    delete:
+      summary: Удаление элемента по ID
+    patch:
+      summary: Частичное обновление элемента по ID
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+            description: Идентификатор баннера
+        - in: header
+          name: token
+          description: Токен админа
+          schema:
+            type: string
+            example: "admin_token"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                tag_ids:
+                  nullable: true
+                  type: array
+                  description: Идентификаторы тэгов
+                  items:
+                    type: integer
+                feature_id:
+                  nullable: true
+                  type: integer
+                  description: Идентификатор фичи
+                content:
+                  nullable: true
+                  type: object
+                  description: Содержимое баннера
+                  additionalProperties: true
+                  example: '{"title": "some_title", "text": "some_text", "url": "some_url"}'
+                is_active:
+                  nullable: true
+                  type: boolean
+                  description: Флаг активности баннера
+      responses:
+        '200':
+          description: OK
+        '400':
+          description: Некорректные данные
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+        '401':
+          description: Пользователь не авторизован
+        '403':
+          description: Пользователь не имеет доступа
+        '404':
+          description: Баннер не найден
+        '500':
+          description: Внутренняя ошибка сервера
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+    post:
+      summary: Обновление элемента по ID

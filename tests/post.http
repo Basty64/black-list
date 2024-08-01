@@ -1,0 +1,10 @@
+POST http://localhost:8080/api/v0/list
+Content-Type: application/json
+
+{
+  "full_name": "vasya bondarev alev",
+  "passport": 7878,
+  "is_employee": true,
+  "actual_company": "yandex",
+  "reason": "not null"
+}
