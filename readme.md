@@ -14,14 +14,20 @@ handlers:
 
 authorization
     	POST /api/v0/registration - регистрация пользователя
+     
     	GET /api/v0/authentication - аутентификация пользователя
 
 admin role
     	GET /api/v0/list - список работников
+     
 	GET /api/v0/list/{id} - информация о работнике по айди
+ 
 	POST /api/v0/list - добавить работника в список
+ 
 	DELETE /api/v0/list/{id} - удалить работника из списка
+ 
 	PATCH /api/v0/list/{id} - обновить работника в списке
+ 
 	GET /api/v0/test-frontend - посмотреть демо фронта  
 
 ### ---updates soon---
