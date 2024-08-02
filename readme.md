@@ -15,13 +15,14 @@
 
 ### handlers:
 
-authorization
+## authorization
+
     	POST /api/v0/registration - регистрация пользователя
      
-    	GET /api/v0/authentication - аутентификация пользователя
+	GET /api/v0/authentication - аутентификация пользователя
 
-admin role
-    	GET /api/v0/list - список работников
+## admin role
+	GET /api/v0/list - список работников
      
 	GET /api/v0/list/{id} - информация о работнике по айди
  
