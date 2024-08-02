@@ -13,15 +13,15 @@
 
 	docker run --name black_list -p 5433:5432 -e POSTGRES_USER=admin -e POSTGRES_PASSWORD=admin -e POSTGRES_DB=black_list -d postgres:14
 
-### handlers:
+## handlers:
 
-## authorization
+### authorization
 
-    	POST /api/v0/registration - регистрация пользователя
+	POST /api/v0/registration - регистрация пользователя
      
 	GET /api/v0/authentication - аутентификация пользователя
 
-## admin role
+### admin role
 	GET /api/v0/list - список работников
      
 	GET /api/v0/list/{id} - информация о работнике по айди
