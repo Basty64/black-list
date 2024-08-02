@@ -32,14 +32,15 @@ func (a *App) Router(s *service.Service) http.Handler {
 
 	//authorization
 	mux.Handle("POST /api/v0/registration", logs.RequestLogger(handlers.UserRegistrationHandler(s)))
-	//mux.HandleFunc("GET /api/v0/authentication", nil)
+	mux.Handle("GET /api/v0/authentication", logs.RequestLogger(handlers.UserAuthenticationHandler(s)))
 
 	//admin role
-	//mux.Handle("GET /api/v0/list", nil)
-	//mux.Handle("GET /api/v0/list/{id}", nil)
+	mux.Handle("GET /api/v0/list", logs.RequestLogger(handlers.GETListHandler(s)))
+	mux.Handle("GET /api/v0/list/{id}", logs.RequestLogger(handlers.GETWorkerHandler(s)))
 	mux.Handle("POST /api/v0/list", logs.RequestLogger(handlers.PostWorkerHandler(s)))
-	//mux.Handle("DELETE /api/v0/list/{id}", nil)
-	//mux.Handle("PATCH /api/v0/list/{id}", nil)
+	mux.Handle("DELETE /api/v0/list/{id}", logs.RequestLogger(handlers.DeleteWorkerHandler(s)))
+	mux.Handle("PATCH /api/v0/list/{id}", logs.RequestLogger(handlers.UpdateWorkerHandler(s)))
+	mux.Handle("/api/v0/test-frontend", logs.RequestLogger(handlers.FrontendHandler()))
 
 	a.mux = mux
 	return a.mux
@@ -76,7 +77,7 @@ func (a *App) Run() error {
 
 	server := &http.Server{Addr: host + ":" + port, Handler: a.Router(serviceStruct)}
 
-	fmt.Printf("Сервер запущен на порту %s и успешно работает", port)
+	fmt.Printf("Сервер запущен на порту %s и успешно работает\n", port)
 	if err := server.ListenAndServe(); err != nil {
 		return err
 	}

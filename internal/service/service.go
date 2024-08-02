@@ -22,11 +22,27 @@ func NewService(repo *postgres.RepoPostgres) *Service {
 	return &Service{repoPostgres: repo}
 }
 
-func (s *Service) AddUser(login string, passwordHash string) (string, error) {
-
-	return "", nil
-}
+//TO DO:
+//func (s *Service) AddUser(login string, passwordHash string) (string, error) {
+//	return "", nil
+//}
 
 func (s *Service) POSTWorker(ctx context.Context, rf models.RecordFields) (int, error) {
 	return s.repoPostgres.POSTWorker(ctx, rf.FullName, rf.Passport, rf.IsEmployee, rf.ActualCompany, rf.Reason)
+}
+
+func (s *Service) GETListOfWorkers(ctx context.Context) ([]models.Worker, error) {
+	return s.repoPostgres.GETListOfWorkers(ctx)
+}
+
+func (s *Service) GETWorker(ctx context.Context, ID int) (models.Worker, error) {
+	return s.repoPostgres.GETWorker(ctx, ID)
+}
+
+func (s *Service) UpdateWorker(ctx context.Context, worker models.Worker, ID int) error {
+	return s.repoPostgres.UpdateWorker(ctx, worker.FullName, worker.Passport, worker.IsEmployee, worker.ActualCompany, worker.Reason, ID)
+}
+
+func (s *Service) DeleteWorker(ctx context.Context, ID int) error {
+	return s.repoPostgres.DeleteWorker(ctx, ID)
 }

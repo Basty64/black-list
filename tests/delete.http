@@ -1,0 +1,2 @@
+###worker 4 delete
+DELETE http://localhost:8080/api/v0/list/9
